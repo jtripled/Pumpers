@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=down": { "model": "pumpers:pump" },
+        "facing=north": { "model": "pumpers:pump_side" },
+        "facing=south": { "model": "pumpers:pump_side", "y": 180 },
+        "facing=west": { "model": "pumpers:pump_side", "y": 270 },
+        "facing=east": { "model": "pumpers:pump_side", "y": 90 }
+    }
+}

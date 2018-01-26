@@ -1,0 +1,16 @@
+[
+{
+  "modid": "pumpers",
+  "name": "Pumpers",
+  "description": "Pumpers like to pump and store fluids in Minecraft.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["jtripled"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["voxen"]
+}
+]
