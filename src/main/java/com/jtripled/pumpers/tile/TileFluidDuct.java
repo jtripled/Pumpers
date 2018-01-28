@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
  */
 public class TileFluidDuct extends TileBase implements ITileFluidStorage, ITileTransferable
 {
-    private FluidTank tank;
+    private final FluidTank tank;
     private EnumFacing previous;
     private int transferCooldown;
     
@@ -36,14 +36,16 @@ public class TileFluidDuct extends TileBase implements ITileFluidStorage, ITileT
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && (facing == getFacing(this) || facing == null);
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                && (facing == null || facing == getFacing(this));
     }
 
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && (facing == getFacing(this) || facing == null) ? (T)this : null;
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                && (facing == null || facing == getFacing(this)) ? (T)this : null;
     }
 
     @Override

@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
  *
  * @author jtripled
  */
-public class TESRTank extends TileEntitySpecialRenderer<TileTank>
+public final class TESRTank extends TileEntitySpecialRenderer<TileTank>
 {
     @Override
     public void render(TileTank tile, double x, double y, double z, float ticks, int destroy, float alpha)

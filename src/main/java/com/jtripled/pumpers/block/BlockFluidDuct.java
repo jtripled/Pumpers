@@ -12,7 +12,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -31,15 +30,12 @@ public class BlockFluidDuct extends BlockDuct implements GUIHolder
         this.setItem();
         this.setTileClass(TileFluidDuct.class);
     }
-    
+
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean canConnect(IBlockState state, IBlockAccess world, BlockPos otherPos, EnumFacing otherFacing)
     {
-        if (!world.isRemote)
-        {
-            this.openGUI(player, world, pos);
-        }
-        return true;
+        TileEntity tile = world.getTileEntity(otherPos);
+        return tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, otherFacing);
     }
     
     @Override
@@ -52,12 +48,5 @@ public class BlockFluidDuct extends BlockDuct implements GUIHolder
     public GUIFluidDuct getClientGUI(EntityPlayer player, World world, BlockPos pos)
     {
         return new GUIFluidDuct(getServerGUI(player, world, pos));
-    }
-
-    @Override
-    public boolean canConnect(IBlockState state, IBlockAccess world, BlockPos otherPos, EnumFacing otherFacing)
-    {
-        TileEntity tile = world.getTileEntity(otherPos);
-        return tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, otherFacing);
     }
 }

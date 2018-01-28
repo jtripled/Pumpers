@@ -36,7 +36,7 @@ import net.minecraftforge.items.ItemStackHandler;
  */
 public class TilePump extends TileBase implements ITileFluidStorage, ITileTransferable
 {
-    private FluidTank tank;
+    private final FluidTank tank;
     private int transferCooldown;
     private int bucketCooldown;
     private final ItemStackHandler input;
@@ -74,15 +74,15 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && (facing == EnumFacing.UP || facing == null))
-                || (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     }
 
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && (facing == EnumFacing.UP || facing == null) ? (T)this :
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T)this :
                 capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (facing == EnumFacing.DOWN ? (T)output : (T)input) : null;
     }
 

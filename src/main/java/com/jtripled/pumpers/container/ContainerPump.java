@@ -10,7 +10,7 @@ import net.minecraftforge.items.SlotItemHandler;
  *
  * @author jtripled
  */
-public class ContainerPump extends ContainerTile<TilePump>
+public final class ContainerPump extends ContainerTile<TilePump>
 {
     public ContainerPump(TilePump tile, InventoryPlayer inventory)
     {

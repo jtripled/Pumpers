@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
  *
  * @author jtripled
  */
-public class ContainerFluidDuct extends ContainerTile<TileFluidDuct>
+public final class ContainerFluidDuct extends ContainerTile<TileFluidDuct>
 {
     public ContainerFluidDuct(TileFluidDuct tile, InventoryPlayer inventory)
     {

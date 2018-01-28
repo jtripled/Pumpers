@@ -17,10 +17,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -44,16 +42,9 @@ public class BlockPump extends BlockBase implements GUIHolder
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(ENABLED, true));
         this.setTileClass(TilePump.class);
         this.setIgnoredProperties(new IProperty[] {ENABLED});
-    }
-    
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if (!world.isRemote)
-        {
-            this.openGUI(player, world, pos);
-        }
-        return true;
+        this.setFullCube(false);
+        this.setOpaque(false);
+        this.setRenderLayer(BlockRenderLayer.CUTOUT_MIPPED);
     }
     
     @Override
@@ -90,30 +81,11 @@ public class BlockPump extends BlockBase implements GUIHolder
             worldIn.setBlockState(pos, state.withProperty(ENABLED, flag), 4);
     }
 
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public BlockRenderLayer getBlockLayer()
-    {
-        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override

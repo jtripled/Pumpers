@@ -24,6 +24,8 @@ public class Pumpers extends ModBase
     public static final String VERSION = "1.0";
     
     public static final Network NETWORK = new Network(ID);
+    
+    public static Registry REGISTRY;
 
     @Override
     public String getID()
@@ -50,14 +52,15 @@ public class Pumpers extends ModBase
     }
     
     @Override
-    public Registry createRegistry()
+    public Registry getRegistry()
     {
-        return new PumpersRegistry();
+        return REGISTRY;
     }
     
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event)
     {
+        REGISTRY = new PumpersRegistry();
         preInit(event);
     }
     

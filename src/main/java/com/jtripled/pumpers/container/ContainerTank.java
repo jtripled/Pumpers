@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
  *
  * @author jtripled
  */
-public class ContainerTank extends ContainerTile<TileTank>
+public final class ContainerTank extends ContainerTile<TileTank>
 {
     public ContainerTank(TileTank tile, InventoryPlayer inventory)
     {
