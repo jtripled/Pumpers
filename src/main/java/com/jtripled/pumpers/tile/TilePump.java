@@ -2,6 +2,7 @@ package com.jtripled.pumpers.tile;
 
 import com.jtripled.pumpers.Pumpers;
 import com.jtripled.pumpers.network.BucketCooldownMessage;
+import com.jtripled.voxen.tile.ITileFluidStorage;
 import com.jtripled.voxen.tile.ITileTransferable;
 import com.jtripled.voxen.tile.TileBase;
 import javax.annotation.Nonnull;
@@ -83,7 +84,8 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T)this :
-                capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (facing == EnumFacing.DOWN ? (T)output : (T)input) : null;
+                capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ?
+                (facing == EnumFacing.DOWN ? (T)output : (T)input) : null;
     }
 
     @Override

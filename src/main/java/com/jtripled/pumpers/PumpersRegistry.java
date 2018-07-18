@@ -29,7 +29,5 @@ public class PumpersRegistry implements Registry
     public void onRegisterMessages(RegistrationHandler handler)
     {
         handler.registerMessage(BucketCooldownMessageHandler.class, BucketCooldownMessage.class, Side.CLIENT);
-        handler.registerMessage(FluidMessageHandler.class, FluidMessage.class, Side.CLIENT);
-        handler.registerMessage(TankResizeMessageHandler.class, TankResizeMessage.class, Side.CLIENT);
     }
 }

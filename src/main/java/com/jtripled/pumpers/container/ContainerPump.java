@@ -2,9 +2,9 @@ package com.jtripled.pumpers.container;
 
 import com.jtripled.pumpers.tile.TilePump;
 import com.jtripled.voxen.container.ContainerTile;
+import com.jtripled.voxen.container.ContainerTileItemSlot;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.SlotItemHandler;
 
 /**
  *
@@ -15,22 +15,9 @@ public final class ContainerPump extends ContainerTile<TilePump>
     public ContainerPump(TilePump tile, InventoryPlayer inventory)
     {
         super(2, inventory, tile);
-        addSlotToContainer(new SlotItemHandler(getTile().getBucketInput(), 0, 55, 36)
+        addSlotToContainer(new ContainerTileItemSlot<>(tile, tile.getBucketInput(), 0, 55, 36));
+        addSlotToContainer(new ContainerTileItemSlot<TilePump>(tile, tile.getBucketInput(), 0, 105, 36)
         {
-            @Override
-            public void onSlotChanged()
-            {
-                tile.markDirty();
-            }
-        });
-        addSlotToContainer(new SlotItemHandler(getTile().getBucketOutput(), 0, 105, 36)
-        {
-            @Override
-            public void onSlotChanged()
-            {
-                tile.markDirty();
-            }
-            
             @Override
             public boolean isItemValid(ItemStack stack)
             {

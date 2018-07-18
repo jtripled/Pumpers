@@ -1,7 +1,8 @@
 package com.jtripled.pumpers.tile;
 
-import com.jtripled.pumpers.block.BlockFluidDuct;
 import com.jtripled.voxen.block.BlockDuct;
+import com.jtripled.voxen.block.IBlockFaceable;
+import com.jtripled.voxen.tile.ITileFluidStorage;
 import com.jtripled.voxen.tile.ITileTransferable;
 import com.jtripled.voxen.tile.TileBase;
 import javax.annotation.Nullable;
@@ -130,7 +131,7 @@ public class TileFluidDuct extends TileBase implements ITileFluidStorage, ITileT
         }
         for (EnumFacing face : next)
         {
-            if (face != state.getValue(BlockFluidDuct.FACING))
+            if (face != state.getValue(IBlockFaceable.FACING))
             {
                 switch (face)
                 {
@@ -148,6 +149,6 @@ public class TileFluidDuct extends TileBase implements ITileFluidStorage, ITileT
     
     public static EnumFacing getFacing(TileFluidDuct tile)
     {
-        return tile.world.getBlockState(tile.getPos()).getValue(BlockFluidDuct.FACING);
+        return tile.world.getBlockState(tile.getPos()).getValue(IBlockFaceable.FACING);
     }
 }
