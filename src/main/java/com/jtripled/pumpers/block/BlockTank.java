@@ -1,61 +1,122 @@
 package com.jtripled.pumpers.block;
 
-import com.jtripled.pumpers.container.ContainerTank;
-import com.jtripled.pumpers.gui.GUITank;
-import com.jtripled.pumpers.render.TESRTank;
+import com.jtripled.pumpers.Pumpers;
 import com.jtripled.pumpers.tile.TileTank;
-import com.jtripled.voxen.block.BlockBase;
-import com.jtripled.voxen.block.IBlockConnectable;
-import com.jtripled.voxen.gui.GUIHolder;
-import com.jtripled.voxen.util.Tab;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  *
  * @author jtripled
  */
-public class BlockTank extends BlockBase implements IBlockConnectable.Vertical, GUIHolder
+public final class BlockTank extends Block
 {
+    public static final String NAME = "tank";
+    public static final ResourceLocation RESOURCE = new ResourceLocation(Pumpers.ID, NAME);
+    public static final int GUI_ID = 2;
+    
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
+    
     public BlockTank()
     {
-        super("tank", Material.IRON);
-        this.setTab(Tab.REDSTONE);
-        this.setItem();
-        this.setTileClass(TileTank.class);
-        this.setTESRClass(TESRTank.class);
-        this.setOpaque(false);
-        this.setFullCube(false);
-        this.setRenderLayer(BlockRenderLayer.CUTOUT_MIPPED);
-        this.setTopSolid(true);
+        super(Material.IRON);
+        this.setUnlocalizedName(NAME);
+        this.setRegistryName(RESOURCE);
+        this.setCreativeTab(CreativeTabs.REDSTONE);
+        this.setDefaultState(this.getDefaultState().withProperty(UP, false).withProperty(DOWN, false));
+    }
+    
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (!world.isRemote)
+        {
+            TileTank tank = ((TileTank) world.getTileEntity(pos)).getBaseTank();
+            player.openGui(Pumpers.getInstance(), GUI_ID, world, tank.getPos().getX(), tank.getPos().getY(), tank.getPos().getZ());
+        }
+        return true;
     }
 
     @Override
-    public boolean canConnect(BlockPos pos, IBlockState state, IBlockAccess world, BlockPos otherPos, IBlockState otherState, EnumFacing face)
+    protected BlockStateContainer createBlockState()
     {
-        return otherState.getBlock() instanceof BlockTank;
+        return new BlockStateContainer(this, new IProperty[] {UP, DOWN});
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
     }
     
     @Override
-    public ContainerTank getServerGUI(EntityPlayer player, World world, BlockPos pos)
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return new ContainerTank(((TileTank) world.getTileEntity(pos)).getBaseTank(), player.inventory);
+        return state.withProperty(UP, canConnect(world.getBlockState(pos.up())))
+                    .withProperty(DOWN, canConnect(world.getBlockState(pos.down())));
     }
     
     @Override
-    public GUITank getClientGUI(EntityPlayer player, World world, BlockPos pos)
+    public boolean hasTileEntity(IBlockState state)
     {
-        return new GUITank(getServerGUI(player, world, pos));
+        return true;
+    }
+    
+    @Override
+    public TileTank createTileEntity(World world, IBlockState state)
+    {
+        return new TileTank();
+    }
+    
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+    
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+    
+    @Override
+    public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    @Override
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
     }
     
     @Override
@@ -161,5 +222,10 @@ public class BlockTank extends BlockBase implements IBlockConnectable.Vertical, 
         }
         
         super.breakBlock(world, pos, state);
+    }
+
+    public static boolean canConnect(IBlockState otherState)
+    {
+        return otherState.getBlock() instanceof BlockTank;
     }
 }

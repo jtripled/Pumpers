@@ -12,10 +12,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  *
  * @author jtripled
  */
-public class BucketCooldownMessageHandler implements IMessageHandler<BucketCooldownMessage, IMessage>
+public class MessageHandlerBucketCooldown implements IMessageHandler<MessageBucketCooldown, IMessage>
 {
     @Override
-    public IMessage onMessage(BucketCooldownMessage message, MessageContext context)
+    public IMessage onMessage(MessageBucketCooldown message, MessageContext context)
     {
         World world = Minecraft.getMinecraft().player.world;
         TileEntity tile = world.getTileEntity(message.getPos());

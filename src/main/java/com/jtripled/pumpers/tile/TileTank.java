@@ -1,7 +1,5 @@
 package com.jtripled.pumpers.tile;
 
-import com.jtripled.voxen.tile.ITileFluidStorage;
-import com.jtripled.voxen.tile.TileBase;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,14 +14,13 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
  *
  * @author jtripled
  */
-public class TileTank extends TileBase implements ITileFluidStorage
+public class TileTank extends TileFluidHandler
 {
-    public FluidTank tank;
     public TileTank baseTank;
     
     public TileTank()
     {
-        this.tank = new FluidTank(Fluid.BUCKET_VOLUME * 16);
+        super(new FluidTank(Fluid.BUCKET_VOLUME * 16));
         this.baseTank = null;
     }
 
@@ -37,14 +34,13 @@ public class TileTank extends TileBase implements ITileFluidStorage
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T)getBaseTank() : null;
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) getBaseTank() : null;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setInteger("capacity", tank.getCapacity());
-        writeInternalTank(compound);
         return super.writeToNBT(compound);
     }
 
@@ -52,7 +48,6 @@ public class TileTank extends TileBase implements ITileFluidStorage
     public void readFromNBT(NBTTagCompound compound)
     {
         tank.setCapacity(compound.getInteger("capacity"));
-        readInternalTank(compound);
         super.readFromNBT(compound);
     }
     
@@ -74,13 +69,11 @@ public class TileTank extends TileBase implements ITileFluidStorage
         return baseTank;
     }
     
-    @Override
     public FluidTank getInternalTank()
     {
         return tank;
     }
     
-    @Override
     public BlockPos getInternalTankPos()
     {
         return pos;

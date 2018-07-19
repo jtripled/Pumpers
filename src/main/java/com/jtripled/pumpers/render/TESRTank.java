@@ -26,8 +26,9 @@ public final class TESRTank extends TileEntitySpecialRenderer<TileTank>
     public void render(TileTank tile, double x, double y, double z, float ticks, int destroy, float alpha)
     {
         IBlockState state = tile.getWorld().getBlockState(tile.getPos()).getActualState(tile.getWorld(), tile.getPos());
-        FluidTank tank = tile.getBaseTank().getInternalTank();
-        int heightDiff = tile.getPos().getY() - tile.getBaseTank().getInternalTankPos().getY();
+        TileTank base = tile.getBaseTank();
+        FluidTank tank = base.getTank();
+        int heightDiff = tile.getPos().getY() - base.getPos().getY();
         int fluidAmount = tank.getFluidAmount() - (heightDiff * 16000);
         int level = fluidAmount >= 16000 ? 16000 : fluidAmount <= 0 ? 0 : fluidAmount;
         if (level <= 0)
@@ -35,7 +36,7 @@ public final class TESRTank extends TileEntitySpecialRenderer<TileTank>
         boolean up = state.getValue(BlockTank.UP);
         boolean down = state.getValue(BlockTank.DOWN);
         boolean renderTop = fluidAmount <= 16000;
-        Fluid fluid = tile.getBaseTank().getInternalTank().getFluid().getFluid();
+        Fluid fluid = base.getTank().getFluid().getFluid();
         try
         {
             GlStateManager.pushMatrix();

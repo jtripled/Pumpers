@@ -8,17 +8,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
  *
  * @author jtripled
  */
-public class BucketCooldownMessage implements IMessage
+public class MessageBucketCooldown implements IMessage
 {
     private BlockPos pos;
     private int cooldown;
 
-    public BucketCooldownMessage()
+    public MessageBucketCooldown()
     {
 
     }
 
-    public BucketCooldownMessage(BlockPos pos, int cooldown)
+    public MessageBucketCooldown(BlockPos pos, int cooldown)
     {
         this.pos = pos;
         this.cooldown = cooldown;

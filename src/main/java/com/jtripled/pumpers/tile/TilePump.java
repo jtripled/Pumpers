@@ -1,10 +1,7 @@
 package com.jtripled.pumpers.tile;
 
 import com.jtripled.pumpers.Pumpers;
-import com.jtripled.pumpers.network.BucketCooldownMessage;
-import com.jtripled.voxen.tile.ITileFluidStorage;
-import com.jtripled.voxen.tile.ITileTransferable;
-import com.jtripled.voxen.tile.TileBase;
+import com.jtripled.pumpers.network.MessageBucketCooldown;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
@@ -15,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.capabilities.Capability;
@@ -35,9 +33,8 @@ import net.minecraftforge.items.ItemStackHandler;
  *
  * @author jtripled
  */
-public class TilePump extends TileBase implements ITileFluidStorage, ITileTransferable
+public class TilePump extends TileFluidHandler implements ITickable
 {
-    private final FluidTank tank;
     private int transferCooldown;
     private int bucketCooldown;
     private final ItemStackHandler input;
@@ -45,7 +42,7 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
     
     public TilePump()
     {
-        this.tank = new FluidTank(Fluid.BUCKET_VOLUME * 8);
+        super(new FluidTank(Fluid.BUCKET_VOLUME * 8));
         this.transferCooldown = -1;
         this.bucketCooldown = 25;
         this.input = new ItemStackHandler(1) {
@@ -91,8 +88,7 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        writeInternalTank(compound);
-        writeTransferCooldown(compound);
+        compound.setInteger("transferCooldown", transferCooldown);
         compound.setInteger("bucketCooldown", bucketCooldown);
         compound.setTag("input", input.serializeNBT());
         compound.setTag("output", output.serializeNBT());
@@ -102,24 +98,11 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        readInternalTank(compound);
-        readTransferCooldown(compound);
+        transferCooldown = compound.getInteger("transferCooldown");
         bucketCooldown = compound.getInteger("bucketCooldown");
         input.deserializeNBT(compound.getCompoundTag("input"));
         output.deserializeNBT(compound.getCompoundTag("output"));
         super.readFromNBT(compound);
-    }
-    
-    @Override
-    public FluidTank getInternalTank()
-    {
-        return tank;
-    }
-
-    @Override
-    public BlockPos getInternalTankPos()
-    {
-        return pos;
     }
     
     public IItemHandler getBucketInput()
@@ -141,7 +124,7 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
     {
         bucketCooldown = cooldown;
         if (!world.isRemote)
-            Pumpers.INSTANCE.getNetwork().sendToAll(new BucketCooldownMessage(pos, bucketCooldown));
+            Pumpers.INSTANCE.getNetwork().sendToAll(new MessageBucketCooldown(pos, bucketCooldown));
     }
     
     public boolean isBucketCooldown()
@@ -153,32 +136,31 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
     {
         setBucketCooldown(25);
     }
-
-    @Override
-    public int getTransferCooldown()
-    {
-        return transferCooldown;
-    }
-
-    @Override
-    public void setTransferCooldown(int cooldown)
-    {
-        transferCooldown = cooldown;
-    }
     
     @Override
-    public boolean canTransferOut()
+    public void update()
     {
-        return tank.getFluidAmount() > 0;
+        TileEntity tile = (TileEntity) this;
+        if (tile.getWorld() != null && !tile.getWorld().isRemote)
+        {
+            transferCooldown -= 1;
+            if (transferCooldown <= 0)
+            {
+                transferCooldown = 0;
+                boolean flag = false;
+                if (tank.getFluidAmount() > 0)
+                    flag = transferOut();
+                if (tank.getFluidAmount() < tank.getCapacity())
+                    flag = transferIn() || flag;
+                if (flag)
+                {
+                    transferCooldown = 8;
+                    tile.markDirty();
+                }
+            }
+        }
     }
     
-    @Override
-    public boolean canTransferIn()
-    {
-        return tank.getFluidAmount() < tank.getCapacity();
-    }
-    
-    @Override
     public boolean transferOut()
     {
         if (input.getStackInSlot(0).isEmpty() && getBucketCooldown() != 25)
@@ -186,7 +168,6 @@ public class TilePump extends TileBase implements ITileFluidStorage, ITileTransf
         return doBucketFill() || doTransferOut();
     }
     
-    @Override
     public boolean transferIn()
     {
         if (input.getStackInSlot(0).isEmpty() && getBucketCooldown() != 25)
