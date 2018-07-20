@@ -198,7 +198,10 @@ public final class BlockTank extends Block
             int oldCapacity = baseTank.getCapacity();
             int newCapacity = (lostTank.getPos().getY() - baseTank.getPos().getY()) * Fluid.BUCKET_VOLUME * 16;
             TileTank aboveTank = (TileTank) tileUp;
+            
+            /* TODO: CHECK FOR NULL */
             FluidStack drained = baseTank.drain(baseTank.drain(Integer.MAX_VALUE, false).amount - newCapacity, true);
+            
             baseTank.setCapacity(newCapacity);
             aboveTank.setCapacity(oldCapacity - newCapacity - Fluid.BUCKET_VOLUME * 16);
             aboveTank.fill(drained, true);
