@@ -1,6 +1,7 @@
 package com.jtripled.pumpers.block;
 
 import com.jtripled.pumpers.Pumpers;
+import com.jtripled.pumpers.network.MessageFluidCapacity;
 import com.jtripled.pumpers.tile.TileTank;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -124,6 +125,11 @@ public final class BlockTank extends Block
     {
         return EnumBlockRenderType.MODEL;
     }
+
+    public static boolean canConnect(IBlockState otherState)
+    {
+        return otherState.getBlock() instanceof BlockTank;
+    }
     
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state)
@@ -148,6 +154,8 @@ public final class BlockTank extends Block
                 ((TileTank) tileUp).baseTank = null;
                 tileUp = world.getTileEntity(tileUp.getPos().up());
             }
+            if (!world.isRemote)
+            Pumpers.getNetwork().sendToAll(new MessageFluidCapacity(baseTank.getPos(), baseTank.getCapacity()));
         }
         
         // Extend Down
@@ -222,10 +230,5 @@ public final class BlockTank extends Block
         }
         
         super.breakBlock(world, pos, state);
-    }
-
-    public static boolean canConnect(IBlockState otherState)
-    {
-        return otherState.getBlock() instanceof BlockTank;
     }
 }
