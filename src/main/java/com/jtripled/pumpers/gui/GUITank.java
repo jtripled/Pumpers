@@ -3,9 +3,9 @@ package com.jtripled.pumpers.gui;
 import com.jtripled.pumpers.Pumpers;
 import com.jtripled.pumpers.container.ContainerTank;
 import com.jtripled.pumpers.tile.TileTank;
+import java.util.Arrays;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import scala.actors.threadpool.Arrays;
 
 /**
  *

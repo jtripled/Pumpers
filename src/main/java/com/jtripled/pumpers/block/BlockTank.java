@@ -147,7 +147,8 @@ public final class BlockTank extends Block
             baseTank = newTank.getBaseTank();
             TileTank aboveTank = (TileTank) tileUp;
             baseTank.setCapacity(baseTank.getCapacity() + aboveTank.getCapacity() + Fluid.BUCKET_VOLUME * 16);
-            baseTank.fill(aboveTank.drain(Integer.MAX_VALUE, true), true);
+            if (aboveTank.getInternalTank().getFluidAmount() > 0)
+                baseTank.fill(aboveTank.drain(Integer.MAX_VALUE, true), true);
             aboveTank.setCapacity(Fluid.BUCKET_VOLUME * 16);
             while (tileUp instanceof TileTank)
             {
@@ -164,7 +165,8 @@ public final class BlockTank extends Block
             baseTank = newTank;
             TileTank aboveTank = (TileTank) tileUp;
             baseTank.setCapacity(aboveTank.getCapacity() + Fluid.BUCKET_VOLUME * 16);
-            baseTank.fill(aboveTank.drain(Integer.MAX_VALUE, true), true);
+            if (aboveTank.getInternalTank().getFluidAmount() > 0)
+                baseTank.fill(aboveTank.drain(Integer.MAX_VALUE, true), true);
             aboveTank.setCapacity(Fluid.BUCKET_VOLUME * 16);
             while (tileUp instanceof TileTank)
             {
@@ -200,11 +202,14 @@ public final class BlockTank extends Block
             TileTank aboveTank = (TileTank) tileUp;
             
             /* TODO: CHECK FOR NULL */
-            FluidStack drained = baseTank.drain(baseTank.drain(Integer.MAX_VALUE, false).amount - newCapacity, true);
+            //FluidStack drained = baseTank.drain(baseTank.drain(Integer.MAX_VALUE, false).amount - newCapacity, true);
             
             baseTank.setCapacity(newCapacity);
             aboveTank.setCapacity(oldCapacity - newCapacity - Fluid.BUCKET_VOLUME * 16);
-            aboveTank.fill(drained, true);
+            if (baseTank.getInternalTank().getFluidAmount() > 0)
+            {
+                aboveTank.fill(baseTank.drain(baseTank.drain(Integer.MAX_VALUE, false).amount - newCapacity, true), true);
+            }
             while (tileUp instanceof TileTank)
             {
                 ((TileTank) tileUp).baseTank = null;
@@ -217,7 +222,8 @@ public final class BlockTank extends Block
         {
             baseTank = (TileTank) tileUp;
             baseTank.setCapacity(lostTank.getCapacity() - Fluid.BUCKET_VOLUME * 16);
-            baseTank.fill(lostTank.drain(Integer.MAX_VALUE, true), true);
+            if (lostTank.getInternalTank().getFluidAmount() > 0)
+                baseTank.fill(lostTank.drain(Integer.MAX_VALUE, true), true);
             while (tileUp instanceof TileTank)
             {
                 ((TileTank) tileUp).baseTank = null;

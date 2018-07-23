@@ -36,9 +36,9 @@ public final class TESRTank extends TileEntitySpecialRenderer<TileTank>
         boolean up = state.getValue(BlockTank.UP);
         boolean down = state.getValue(BlockTank.DOWN);
         boolean renderTop = fluidAmount <= 16000;
-        Fluid fluid = base.getTank().getFluid().getFluid();
         try
         {
+            Fluid fluid = base.getTank().getFluid().getFluid();
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
