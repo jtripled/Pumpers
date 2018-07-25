@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  *
@@ -24,14 +23,8 @@ public class PumpersBlocks
     @SubscribeEvent
     public static void onRegisterBlocks(RegistryEvent.Register<Block> event)
     {
-        event.getRegistry().register(FLUID_DUCT);
-        event.getRegistry().register(PUMP);
-        event.getRegistry().register(TANK);
-        
-        GameRegistry.registerTileEntity(TileFluidDuct.class, FLUID_DUCT.getRegistryName().toString());
-        GameRegistry.registerTileEntity(TilePump.class, PUMP.getRegistryName().toString());
-        GameRegistry.registerTileEntity(TileTank.class, TANK.getRegistryName().toString());
-        
-        Pumpers.getProxy().registerIgnoredProperties(PUMP, BlockPump.ENABLED);
+        Pumpers.getProxy().registerBlock(event, FLUID_DUCT, TileFluidDuct.class);
+        Pumpers.getProxy().registerBlock(event, PUMP, TilePump.class, BlockPump.ENABLED);
+        Pumpers.getProxy().registerBlock(event, TANK, TileTank.class);
     }
 }

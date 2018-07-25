@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public final class GUIFluidDuct extends GUIFluidHandler
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Pumpers.ID, "textures/gui/fluid_duct.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(Pumpers.getID(), "textures/gui/fluid_duct.png");
     
     private final ContainerFluidDuct container;
     private final TileFluidDuct tile;

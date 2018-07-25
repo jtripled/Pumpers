@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public final class GUIPump extends GUIFluidHandler
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Pumpers.ID, "textures/gui/pump.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(Pumpers.getID(), "textures/gui/pump.png");
     
     private final ContainerPump container;
     private final TilePump tile;

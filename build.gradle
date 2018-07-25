@@ -10,9 +10,9 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 
-version = "1.0"
-group = "com.jtripled.pumpers"
-archivesBaseName = "pumpers"
+version = mod_version
+group = mod_group
+archivesBaseName = mod_id
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -20,9 +20,14 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.4.2739"
+    version = mc_version + "-" + forge_version
     runDir = "run"
-    mappings = "snapshot_20171003"
+    mappings = forge_mappings
+    replace "@mod_id@", mod_id
+    replace "@mod_name@", mod_name
+    replace "@mod_version@", mod_version
+    replace "@mod_depends@", mod_depends
+    replaceIn mod_name + ".java"
 }
 
 dependencies {

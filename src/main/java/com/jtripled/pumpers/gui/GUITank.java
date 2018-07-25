@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public final class GUITank extends GUIFluidHandler
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Pumpers.ID, "textures/gui/tank.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(Pumpers.getID(), "textures/gui/tank.png");
     
     private final ContainerTank container;
     private final TileTank tile;

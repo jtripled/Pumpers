@@ -20,12 +20,8 @@ public class PumpersItems
     @SubscribeEvent
     public static void onRegisterItems(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(FLUID_DUCT_ITEM);
-        event.getRegistry().register(PUMP_ITEM);
-        event.getRegistry().register(TANK_ITEM);
-        
-        Pumpers.getProxy().registerItemRenderer(FLUID_DUCT_ITEM, "normal");
-        Pumpers.getProxy().registerItemRenderer(PUMP_ITEM, "normal");
-        Pumpers.getProxy().registerItemRenderer(TANK_ITEM, "normal");
+        Pumpers.getProxy().registerItem(event, FLUID_DUCT_ITEM);
+        Pumpers.getProxy().registerItem(event, PUMP_ITEM);
+        Pumpers.getProxy().registerItem(event, TANK_ITEM);
     }
 }

@@ -16,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -31,8 +30,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public final class BlockFluidDuct extends Block
 {
-    public static final String NAME = "fluid_duct";
-    public static final ResourceLocation RESOURCE = new ResourceLocation(Pumpers.ID, NAME);
     public static final AxisAlignedBB BOX = new AxisAlignedBB(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875);
     public static final int GUI_ID = 0;
     
@@ -47,8 +44,8 @@ public final class BlockFluidDuct extends Block
     public BlockFluidDuct()
     {
         super(Material.IRON);
-        this.setUnlocalizedName(NAME);
-        this.setRegistryName(RESOURCE);
+        this.setUnlocalizedName("fluid_duct");
+        this.setRegistryName(Pumpers.getID(), "fluid_duct");
         this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.NORTH).withProperty(UP, false).withProperty(DOWN, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false));
     }

@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -26,10 +25,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  * @author jtripled
  */
-public class BlockPump extends Block
+public final class BlockPump extends Block
 {
-    public static final String NAME = "pump";
-    public static final ResourceLocation RESOURCE = new ResourceLocation(Pumpers.ID, NAME);
     public static final int GUI_ID = 1;
     
     public static final PropertyDirection FACING = PropertyDirection.create("facing", (EnumFacing face) -> { return face != EnumFacing.UP; });
@@ -38,8 +35,8 @@ public class BlockPump extends Block
     public BlockPump()
     {
         super(Material.IRON);
-        this.setUnlocalizedName(NAME);
-        this.setRegistryName(RESOURCE);
+        this.setUnlocalizedName("pump");
+        this.setRegistryName(Pumpers.getID(), "pump");
         this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.NORTH).withProperty(ENABLED, true));
     }

@@ -16,12 +16,10 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -31,8 +29,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public final class BlockTank extends Block
 {
-    public static final String NAME = "tank";
-    public static final ResourceLocation RESOURCE = new ResourceLocation(Pumpers.ID, NAME);
     public static final int GUI_ID = 2;
     
     public static final PropertyBool UP = PropertyBool.create("up");
@@ -41,8 +37,8 @@ public final class BlockTank extends Block
     public BlockTank()
     {
         super(Material.IRON);
-        this.setUnlocalizedName(NAME);
-        this.setRegistryName(RESOURCE);
+        this.setUnlocalizedName("tank");
+        this.setRegistryName(Pumpers.getID(), "tank");
         this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setDefaultState(this.getDefaultState().withProperty(UP, false).withProperty(DOWN, false));
     }

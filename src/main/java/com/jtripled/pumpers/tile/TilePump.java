@@ -124,7 +124,7 @@ public class TilePump extends TileFluidHandler implements ITickable
     {
         bucketCooldown = cooldown;
         if (!world.isRemote)
-            Pumpers.INSTANCE.getNetwork().sendToAll(new MessageBucketCooldown(pos, bucketCooldown));
+            Pumpers.getNetwork().sendToAll(new MessageBucketCooldown(pos, bucketCooldown));
     }
     
     public boolean isBucketCooldown()
