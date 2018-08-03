@@ -8,23 +8,25 @@ import net.minecraft.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 /**
  *
  * @author jtripled
  */
 @Mod.EventBusSubscriber
+@ObjectHolder(Pumpers.ID)
 public class PumpersBlocks
 {
-    public static final Block FLUID_DUCT = new BlockFluidDuct();
-    public static final Block PUMP = new BlockPump();
-    public static final Block TANK = new BlockTank();
+    public static final Block FLUID_DUCT = null;
+    public static final Block PUMP = null;
+    public static final Block TANK = null;
     
     @SubscribeEvent
     public static void onRegisterBlocks(RegistryEvent.Register<Block> event)
     {
-        Pumpers.getProxy().registerBlock(event, FLUID_DUCT, TileFluidDuct.class);
-        Pumpers.getProxy().registerBlock(event, PUMP, TilePump.class, BlockPump.ENABLED);
-        Pumpers.getProxy().registerBlock(event, TANK, TileTank.class);
+        Pumpers.getProxy().registerBlock(event, new BlockFluidDuct(), TileFluidDuct.class);
+        Pumpers.getProxy().registerBlock(event, new BlockPump(), TilePump.class, BlockPump.ENABLED);
+        Pumpers.getProxy().registerBlock(event, new BlockTank(), TileTank.class);
     }
 }
